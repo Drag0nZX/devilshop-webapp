@@ -218,6 +218,14 @@
   }
   .done-screen h2{margin:0 0 8px;font-size:19px;}
   .done-screen p{color:var(--muted);font-size:13px;margin:0;}
+
+  .submit-btn{
+    width:100%;margin-top:18px;
+    background:var(--accent);color:var(--accent-ink);border:none;
+    border-radius:14px;padding:15px 16px;font-size:15px;font-weight:700;
+    cursor:pointer;box-shadow:0 8px 24px rgba(245,166,35,.25);
+  }
+  .submit-btn:active{transform:translateY(2px);}
 </style>
 </head>
 <body>
@@ -270,6 +278,10 @@
     <div class="pay-options" id="pay-options"></div>
 
     <div id="checkout-receipt"></div>
+
+    <button id="submit-btn" class="submit-btn" onclick="submitOrder()">
+      Отправить заказ · <span id="submit-total">0 ₽</span>
+    </button>
   </div>
 
   <!-- ===== DONE ===== -->
@@ -297,8 +309,9 @@
   let PRODUCTS = [];
 
   const PAY_METHODS = [
-    { id: "cash", label: "Наличными при получении" },
-    { id: "transfer", label: "Перевод на карту" },
+    { id: "cash", label: "Наличными" },
+    { id: "card", label: "Картой при получении" },
+    { id: "online", label: "Онлайн-оплата" },
   ];
 
   // ---------------------------------------------------------------
@@ -391,16 +404,34 @@
 
   function updateBar(){
     const count = cartCount();
-    document.getElementById("bar-count").textContent = count;
-    document.getElementById("bar-total").textContent = fmt(cartTotal());
     const bar = document.getElementById("bottombar");
-    const onCatalogOrCart = document.getElementById("view-catalog").classList.contains("hidden") === false
-      || document.getElementById("view-cart").classList.contains("hidden") === false;
-    bar.classList.toggle("hidden", !(count > 0 && onCatalogOrCart));
+    const inner = document.getElementById("bar-inner");
+    const view = currentView();
+
+    if (count === 0 || view === "checkout" || view === "done"){
+      bar.classList.add("hidden");
+      return;
+    }
+    bar.classList.remove("hidden");
+
+    if (view === "catalog"){
+      inner.innerHTML = `<span><span class="count">${count}</span>Корзина</span><span>${fmt(cartTotal())}</span>`;
+    } else if (view === "cart"){
+      inner.innerHTML = `<span>Оформить заказ</span><span>${fmt(cartTotal())}</span>`;
+    }
+  }
+
+  function currentView(){
+    if (!document.getElementById("view-checkout").classList.contains("hidden")) return "checkout";
+    if (!document.getElementById("view-cart").classList.contains("hidden")) return "cart";
+    if (!document.getElementById("view-done").classList.contains("hidden")) return "done";
+    return "catalog";
   }
 
   function onBarClick(){
-    showView("cart");
+    const view = currentView();
+    if (view === "catalog") showView("cart");
+    else if (view === "cart") showView("checkout");
   }
 
   function showView(name){
@@ -410,7 +441,6 @@
     if (name==="cart") renderCart();
     if (name==="checkout") renderCheckout();
     updateBar();
-    setupMainButton(name);
   }
 
   function renderCart(){
@@ -467,37 +497,12 @@
         <div class="total"><span>Итого</span><b>${fmt(cartTotal())}</b></div>
       </div>
     `;
+    document.getElementById("submit-total").textContent = fmt(cartTotal());
   }
 
   function selectPay(id){
     selectedPay = id;
     renderCheckout();
-  }
-
-  function setupMainButton(view){
-    if (!tg) return;
-    if (view === "cart" && cartCount() > 0){
-      tg.MainButton.setText("Оформить заказ");
-      tg.MainButton.show();
-      tg.MainButton.offClick(onMainButton);
-      tg.MainButton.onClick(onMainButton);
-    } else if (view === "checkout"){
-      tg.MainButton.setText("Отправить заказ · " + fmt(cartTotal()));
-      tg.MainButton.show();
-      tg.MainButton.offClick(onMainButton);
-      tg.MainButton.onClick(onMainButton);
-    } else {
-      tg.MainButton.hide();
-    }
-  }
-
-  function onMainButton(){
-    const view = document.getElementById("view-cart").classList.contains("hidden") ? "checkout" : "cart";
-    if (view === "cart"){
-      showView("checkout");
-      return;
-    }
-    submitOrder();
   }
 
   function submitOrder(){
@@ -526,7 +531,6 @@
     };
 
     if (tg){
-      tg.MainButton.hide();
       tg.sendData(JSON.stringify(order));
       // Telegram закроет Mini App автоматически после sendData
     } else {
