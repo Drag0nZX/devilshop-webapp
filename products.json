@@ -1,6 +1,6 @@
 [
-  { "id": "p1", "emoji": "📦", "name": "Товар 1", "desc": "Краткое описание товара", "price": 500 },
-  { "id": "p2", "emoji": "🎁", "name": "Товар 2", "desc": "Краткое описание товара", "price": 750 },
-  { "id": "p3", "emoji": "🧴", "name": "Товар 3", "desc": "Краткое описание товара", "price": 350 },
-  { "id": "p4", "emoji": "🛒", "name": "Товар 4", "desc": "Краткое описание товара", "price": 1200 }
+  { "id": "p1", "emoji": "📦", "name": "Xros 5 mini", "desc": "бебебе", "price": 500 },
+  { "id": "p2", "emoji": "🎁", "name": "Xros 6", "desc": "lelele", "price": 750 },
+  { "id": "p3", "emoji": "🧴", "name": "Картридж Xros 0.6", "desc": "lalala", "price": 350 },
+  { "id": "p4", "emoji": "🛒", "name": "Картридж Xros 0.8", "desc": "lululu", "price": 1200 }
 ]
