@@ -3,8 +3,8 @@
     "id": "xros6",
     "name": "Xros 6",
     "emoji": "💨",
-    "image": "images/xros6.jpg",
-    "desc": "электронная сигарета",
+    "image": "",
+    "desc": "Популярный POD — выберите цвет",
     "price": 2500,
     "has_variants": true,
     "variants": [
@@ -32,10 +32,10 @@
   },
   {
     "id": "p2",
-    "name": "xros 5 mini",
+    "name": "Товар 2",
     "emoji": "🎁",
-    "image": "images/xros5mini.jpg",
-    "desc": "электронная сигарета",
+    "image": "",
+    "desc": "Краткое описание товара",
     "price": 750,
     "has_variants": true,
     "variants": [
@@ -48,10 +48,10 @@
   },
   {
     "id": "p3",
-    "name": "Картридж для Xros 0.6",
+    "name": "Товар 3",
     "emoji": "🧴",
-    "image": "images/xros0.6.jpg",
-    "desc": "2 мл",
+    "image": "",
+    "desc": "Краткое описание товара",
     "price": 350,
     "has_variants": true,
     "variants": [
@@ -64,10 +64,10 @@
   },
   {
     "id": "p4",
-    "name": "Картридж для Xros 0.8",
+    "name": "Товар 4",
     "emoji": "🛒",
-    "image": "images/xros0.8.jpg",
-    "desc": "3 мл",
+    "image": "",
+    "desc": "Краткое описание товара",
     "price": 1200,
     "has_variants": true,
     "variants": [
@@ -75,37 +75,6 @@
         "id": "p4",
         "name": "Товар 4",
         "stock": 6
-      }
-    ]
-  },
-  {
-    "id": "персиковый-грушевый-59058",
-    "name": "персиковый грушевый",
-    "emoji": "📦",
-    "image": "",
-    "desc": "курилка",
-    "price": 1950,
-    "has_variants": true,
-    "variants": [
-      {
-        "id": "p-v0",
-        "name": "гранат",
-        "stock": 2
-      },
-      {
-        "id": "p-v1",
-        "name": "светодиод",
-        "stock": 6
-      },
-      {
-        "id": "p-v2",
-        "name": "механика",
-        "stock": 2
-      },
-      {
-        "id": "p-v3",
-        "name": "флеш",
-        "stock": 1
       }
     ]
   }
