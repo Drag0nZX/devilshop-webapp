@@ -220,6 +220,16 @@
   .done-screen h2{margin:0 0 8px;font-size:19px;}
   .done-screen p{color:var(--muted);font-size:13px;margin:0;}
 
+  .toast{
+    position:fixed;top:0;left:0;right:0;z-index:999;
+    background:var(--danger);color:#fff;
+    padding:14px 16px calc(14px + env(safe-area-inset-top));
+    padding-top:calc(14px + env(safe-area-inset-top));
+    font-size:13px;font-weight:600;text-align:center;
+    box-shadow:0 4px 16px rgba(0,0,0,.35);
+  }
+  .toast.ok{ background:var(--good); }
+
   .submit-btn{
     width:100%;margin-top:18px;
     background:var(--accent);color:var(--accent-ink);border:none;
@@ -230,6 +240,9 @@
 </style>
 </head>
 <body>
+
+  <div id="toast" class="toast hidden"></div>
+
 
   <!-- ===== CATALOG ===== -->
   <div id="view-catalog" class="view">
@@ -318,10 +331,18 @@
   // ---------------------------------------------------------------
 
   window.onerror = function(msg, src, line, col, err){
-    alert("JS ошибка: " + msg + "\nстрока " + line + ":" + col);
+    showToast("JS ошибка: " + msg + " (строка " + line + ")");
   };
 
   const tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
+
+  function showToast(msg, ok){
+    const t = document.getElementById("toast");
+    t.textContent = msg;
+    t.className = "toast" + (ok ? " ok" : "");
+    clearTimeout(showToast._timer);
+    showToast._timer = setTimeout(()=>{ t.className = "toast hidden"; }, 5000);
+  }
   if (tg) { tg.ready(); tg.expand(); }
 
   const cart = {}; // id -> qty
@@ -548,7 +569,7 @@
       addrEl.style.border = "1px solid var(--danger)";
       addrEl.focus();
       addrEl.scrollIntoView({behavior:"smooth", block:"center"});
-      alert("Заполните адрес доставки — без него заказ не отправится.");
+      showToast("Заполните адрес доставки — без него заказ не отправится.");
       return;
     }
 
@@ -588,16 +609,12 @@
 
   function showSendError(){
     if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred("error");
-    alert(
-      "Не удалось отправить заказ через это приложение Telegram.\n\n" +
-      "Откройте каталог с телефона (мобильное приложение Telegram) — там отправка работает надёжно. " +
-      "Либо обновите Telegram Desktop до последней версии."
-    );
+    showToast("Не удалось отправить заказ через это приложение Telegram. Попробуйте с телефона или обновите Telegram.");
   }
 
   loadProducts();
 </script>
-  <div style="text-align:center;color:#4a5266;font-size:10px;padding:10px 0 4px;">build 8</div>
+  <div style="text-align:center;color:#4a5266;font-size:10px;padding:10px 0 4px;">build 9</div>
 
 </body>
 </html>
