@@ -3,8 +3,8 @@
     "id": "xros6",
     "name": "Xros 6",
     "emoji": "💨",
-    "image": "",
-    "desc": "Популярный POD — выберите цвет",
+    "image": "image/xros6.jpg",
+    "desc": "электронная сигарета",
     "price": 2500,
     "has_variants": true,
     "variants": [
@@ -32,10 +32,10 @@
   },
   {
     "id": "p2",
-    "name": "Товар 2",
+    "name": "xros 5 mini",
     "emoji": "🎁",
-    "image": "",
-    "desc": "Краткое описание товара",
+    "image": "image/xros5mini.jpg",
+    "desc": "электронная сигарета",
     "price": 750,
     "has_variants": true,
     "variants": [
@@ -48,10 +48,10 @@
   },
   {
     "id": "p3",
-    "name": "Товар 3",
+    "name": "Картридж для Xros 0.6",
     "emoji": "🧴",
-    "image": "",
-    "desc": "Краткое описание товара",
+    "image": "image/xros0.6.jpg",
+    "desc": "2 мл",
     "price": 350,
     "has_variants": true,
     "variants": [
@@ -64,10 +64,10 @@
   },
   {
     "id": "p4",
-    "name": "Товар 4",
+    "name": "Картридж для Xros 0.8",
     "emoji": "🛒",
-    "image": "",
-    "desc": "Краткое описание товара",
+    "image": "image/xros0.8.jpg",
+    "desc": "3 мл",
     "price": 1200,
     "has_variants": true,
     "variants": [
