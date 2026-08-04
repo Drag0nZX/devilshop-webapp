@@ -313,7 +313,8 @@
       uid = tg.initDataUnsafe.user.id;
     }
     const q = new URLSearchParams(location.search);
-    IS_ADMIN = (uid && CLIENT_ADMIN_IDS.includes(uid)) || q.get("admin") === "1";
+    const ids = CLIENT_ADMIN_IDS.map(Number);
+    IS_ADMIN = (uid != null && ids.includes(Number(uid))) || q.get("admin") === "1";
     document.getElementById("admin-fab").classList.toggle("hidden", !IS_ADMIN);
   }
 
