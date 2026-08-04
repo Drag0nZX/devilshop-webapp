@@ -2,6 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Каталог</title>
 <style>
@@ -267,7 +268,7 @@
     </div>
     <div class="field">
       <label>Телефон</label>
-      <input id="f-phone" type="tel" placeholder="+7 ...">
+      <input id="f-phone" type="tel" inputmode="numeric" value="+7" oninput="onPhoneInput(this)" onfocus="onPhoneFocus(this)">
     </div>
     <div class="field">
       <label>Комментарий (необязательно)</label>
@@ -337,6 +338,31 @@
   }
 
   function fmt(n){ return n.toLocaleString("ru-RU") + " ₽"; }
+
+  function formatPhone(raw){
+    let digits = raw.replace(/\D/g, "");
+    if (digits.startsWith("7") || digits.startsWith("8")) digits = digits.slice(1);
+    digits = digits.slice(0, 10);
+
+    let out = "+7";
+    if (digits.length > 0) out += " (" + digits.slice(0, 3);
+    if (digits.length >= 3) out += ")";
+    if (digits.length > 3) out += " " + digits.slice(3, 6);
+    if (digits.length > 6) out += "-" + digits.slice(6, 8);
+    if (digits.length > 8) out += "-" + digits.slice(8, 10);
+    return out;
+  }
+
+  function onPhoneInput(el){
+    const pos = el.value.length;
+    el.value = formatPhone(el.value);
+    // курсор всегда в конец — проще и предсказуемее при живом форматировании
+    el.setSelectionRange(el.value.length, el.value.length);
+  }
+
+  function onPhoneFocus(el){
+    if (!el.value) el.value = "+7";
+  }
 
   function thumbHtml(p){
     if (p.image){
@@ -507,7 +533,8 @@
 
   function submitOrder(){
     const address = document.getElementById("f-address").value.trim();
-    const phone = document.getElementById("f-phone").value.trim();
+    let phone = document.getElementById("f-phone").value.trim();
+    if (!/\d/.test(phone.replace("+7", ""))) phone = ""; // ничего кроме +7 не ввели
 
     if (!address){
       if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred("error");
@@ -530,13 +557,32 @@
       payment: PAY_METHODS.find(m=>m.id===selectedPay).label,
     };
 
-    if (tg){
-      tg.sendData(JSON.stringify(order));
-      // Telegram закроет Mini App автоматически после sendData
+    const canSend = tg && typeof tg.sendData === "function";
+
+    if (canSend){
+      try {
+        tg.sendData(JSON.stringify(order));
+        // Telegram закроет Mini App автоматически после sendData
+      } catch (e) {
+        showSendError();
+      }
+    } else if (tg) {
+      // Внутри Telegram, но клиент не поддерживает отправку данных
+      // (встречается на некоторых версиях Telegram Desktop)
+      showSendError();
     } else {
       // предпросмотр вне Telegram
       showView("done");
     }
+  }
+
+  function showSendError(){
+    if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred("error");
+    alert(
+      "Не удалось отправить заказ через это приложение Telegram.\n\n" +
+      "Откройте каталог с телефона (мобильное приложение Telegram) — там отправка работает надёжно. " +
+      "Либо обновите Telegram Desktop до последней версии."
+    );
   }
 
   loadProducts();
