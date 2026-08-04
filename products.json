@@ -77,41 +77,5 @@
         "stock": 6
       }
     ]
-  },
-  {
-    "id": "xros-5-mini-pro-max-ultra-58360",
-    "name": "xros 5 mini pro max ultra",
-    "emoji": "📦",
-    "image": "",
-    "desc": "kurilka",
-    "price": 1945,
-    "has_variants": true,
-    "variants": [
-      {
-        "id": "p-v0",
-        "name": "голубой",
-        "stock": 1
-      },
-      {
-        "id": "p-v1",
-        "name": "оранжевый",
-        "stock": 9
-      },
-      {
-        "id": "p-v2",
-        "name": "персиковый",
-        "stock": 4
-      },
-      {
-        "id": "p-v3",
-        "name": "индиго",
-        "stock": 5
-      },
-      {
-        "id": "p-v4",
-        "name": "абрикос",
-        "stock": 0
-      }
-    ]
   }
 ]
