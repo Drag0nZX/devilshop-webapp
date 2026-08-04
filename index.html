@@ -317,6 +317,10 @@
 
   // ---------------------------------------------------------------
 
+  window.onerror = function(msg, src, line, col, err){
+    alert("JS ошибка: " + msg + "\nстрока " + line + ":" + col);
+  };
+
   const tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
   if (tg) { tg.ready(); tg.expand(); }
 
@@ -384,44 +388,45 @@
   function renderGrid(){
     const grid = document.getElementById("grid");
     grid.innerHTML = "";
-    PRODUCTS.forEach(p=>{
-      const qty = cart[p.id] || 0;
+    PRODUCTS.forEach((p, i)=>{
       const el = document.createElement("div");
       el.className = "product";
-      el.id = "prod-"+p.id;
+      el.id = "prod-idx-"+i;
       el.innerHTML = `
         <div class="thumb">${thumbHtml(p)}</div>
         <div class="name">${p.name}</div>
         <div class="desc">${p.desc}</div>
         <div class="row">
           <div class="price">${fmt(p.price)}</div>
-          <div class="stepper" id="stepper-${p.id}"></div>
+          <div class="stepper" id="stepper-idx-${i}"></div>
         </div>
       `;
       grid.appendChild(el);
-      renderStepper(p.id);
+      renderStepper(i);
     });
   }
 
-  function renderStepper(id){
-    const holder = document.getElementById("stepper-"+id);
-    const qty = cart[id] || 0;
+  function renderStepper(idx){
+    const p = PRODUCTS[idx];
+    const holder = document.getElementById("stepper-idx-"+idx);
+    const qty = cart[p.id] || 0;
     if (qty === 0){
-      holder.innerHTML = `<button class="add" onclick="changeQty('${id}',1)">+</button>`;
+      holder.innerHTML = `<button class="add" onclick="changeQty(${idx},1)">+</button>`;
     } else {
       holder.innerHTML = `
-        <button onclick="changeQty('${id}',-1)">−</button>
+        <button onclick="changeQty(${idx},-1)">−</button>
         <span class="qty">${qty}</span>
-        <button class="add" onclick="changeQty('${id}',1)">+</button>
+        <button class="add" onclick="changeQty(${idx},1)">+</button>
       `;
     }
   }
 
-  function changeQty(id, delta){
-    const next = (cart[id]||0) + delta;
-    if (next <= 0){ delete cart[id]; } else { cart[id] = next; }
-    renderStepper(id);
-    const card = document.getElementById("prod-"+id);
+  function changeQty(idx, delta){
+    const p = PRODUCTS[idx];
+    const next = (cart[p.id]||0) + delta;
+    if (next <= 0){ delete cart[p.id]; } else { cart[p.id] = next; }
+    renderStepper(idx);
+    const card = document.getElementById("prod-idx-"+idx);
     card.classList.add("added");
     setTimeout(()=>card.classList.remove("added"), 150);
     if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred("light");
@@ -479,6 +484,7 @@
     }
     list.innerHTML = entries.map(([id,qty])=>{
       const p = PRODUCTS.find(p=>p.id===id);
+      const idx = PRODUCTS.findIndex(p=>p.id===id);
       return `
         <div class="cart-item">
           <div class="thumb">${thumbHtml(p)}</div>
@@ -487,9 +493,9 @@
             <div class="p">${fmt(p.price)} × ${qty}</div>
           </div>
           <div class="qty-x">
-            <button onclick="changeQty('${id}',-1); renderCart();">−</button>
+            <button onclick="changeQty(${idx},-1); renderCart();">−</button>
             <span class="qty">${qty}</span>
-            <button onclick="changeQty('${id}',1); renderCart();">+</button>
+            <button onclick="changeQty(${idx},1); renderCart();">+</button>
           </div>
         </div>
       `;
@@ -538,7 +544,11 @@
 
     if (!address){
       if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred("error");
-      document.getElementById("f-address").focus();
+      const addrEl = document.getElementById("f-address");
+      addrEl.style.border = "1px solid var(--danger)";
+      addrEl.focus();
+      addrEl.scrollIntoView({behavior:"smooth", block:"center"});
+      alert("Заполните адрес доставки — без него заказ не отправится.");
       return;
     }
 
