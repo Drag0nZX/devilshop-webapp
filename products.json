@@ -1,44 +1,120 @@
 [
   {
     "id": "xros6",
+    "name": "Xros 6",
     "emoji": "💨",
     "image": "",
-    "name": "Xros 6",
     "desc": "Популярный POD — выберите цвет",
     "price": 2500,
     "has_variants": true,
     "variants": [
-      { "id": "xros6-black", "name": "Чёрный", "stock": 8 },
-      { "id": "xros6-blue", "name": "Синий", "stock": 3 },
-      { "id": "xros6-silver", "name": "Серебристый", "stock": 0 },
-      { "id": "xros6-pink", "name": "Розовый", "stock": 5 }
+      {
+        "id": "xros6-black",
+        "name": "Чёрный",
+        "stock": 8
+      },
+      {
+        "id": "xros6-blue",
+        "name": "Синий",
+        "stock": 3
+      },
+      {
+        "id": "xros6-silver",
+        "name": "Серебристый",
+        "stock": 0
+      },
+      {
+        "id": "xros6-pink",
+        "name": "Розовый",
+        "stock": 5
+      }
     ]
   },
   {
     "id": "p2",
+    "name": "Товар 2",
     "emoji": "🎁",
     "image": "",
-    "name": "Товар 2",
     "desc": "Краткое описание товара",
     "price": 750,
+    "has_variants": false,
+    "variants": [
+      {
+        "id": "p2",
+        "name": "Товар 2",
+        "stock": 12
+      }
+    ],
     "stock": 12
   },
   {
     "id": "p3",
+    "name": "Товар 3",
     "emoji": "🧴",
     "image": "",
-    "name": "Товар 3",
     "desc": "Краткое описание товара",
     "price": 350,
+    "has_variants": false,
+    "variants": [
+      {
+        "id": "p3",
+        "name": "Товар 3",
+        "stock": 0
+      }
+    ],
     "stock": 0
   },
   {
     "id": "p4",
+    "name": "Товар 4",
     "emoji": "🛒",
     "image": "",
-    "name": "Товар 4",
     "desc": "Краткое описание товара",
     "price": 1200,
+    "has_variants": false,
+    "variants": [
+      {
+        "id": "p4",
+        "name": "Товар 4",
+        "stock": 6
+      }
+    ],
     "stock": 6
+  },
+  {
+    "id": "xros-5-mini-pro-max-ultra-58360",
+    "name": "xros 5 mini pro max ultra",
+    "emoji": "📦",
+    "image": "",
+    "desc": "kurilka",
+    "price": 1945,
+    "has_variants": true,
+    "variants": [
+      {
+        "id": "p-v0",
+        "name": "голубой",
+        "stock": 0
+      },
+      {
+        "id": "p-v1",
+        "name": "оранжевый",
+        "stock": 0
+      },
+      {
+        "id": "p-v2",
+        "name": "персиковый",
+        "stock": 0
+      },
+      {
+        "id": "p-v3",
+        "name": "индиго",
+        "stock": 0
+      },
+      {
+        "id": "p-v4",
+        "name": "абрикос",
+        "stock": 0
+      }
+    ]
   }
 ]
