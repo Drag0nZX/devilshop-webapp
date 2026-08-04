@@ -1,8 +1,44 @@
 [
-  { "id": "p1", "emoji": "📦", "image": "images/xros5mini.jpg", "name": "Xros 5 mini", "desc": "розовый градиент", "price": 2150 },
-  { "id": "p2", "emoji": "📦", "image": "images/xros6.jpg", "name": "Xros 6", "desc": "красно-серебрянный", "price": 2450 },
-  { "id": "p3", "emoji": "📦", "image": "images/xros0.6.jpg", "name": "Картридж Xros 0.6", "desc": "2 мл", "price": 250 },
-  { "id": "p4", "emoji": "📦", "image": "images/xros0.8.jpg", "name": "Картридж Xros 0.8", "desc": "2 мл", "price": 250 },
-  { "id": "p5", "emoji": "📦", "image": "", "name": "холодный бустер", "desc": "2 мл", "price": 50 }
-  
+  {
+    "id": "xros6",
+    "emoji": "💨",
+    "image": "",
+    "name": "Xros 6",
+    "desc": "Популярный POD — выберите цвет",
+    "price": 2500,
+    "has_variants": true,
+    "variants": [
+      { "id": "xros6-black", "name": "Чёрный", "stock": 8 },
+      { "id": "xros6-blue", "name": "Синий", "stock": 3 },
+      { "id": "xros6-silver", "name": "Серебристый", "stock": 0 },
+      { "id": "xros6-pink", "name": "Розовый", "stock": 5 }
+    ]
+  },
+  {
+    "id": "p2",
+    "emoji": "🎁",
+    "image": "",
+    "name": "Товар 2",
+    "desc": "Краткое описание товара",
+    "price": 750,
+    "stock": 12
+  },
+  {
+    "id": "p3",
+    "emoji": "🧴",
+    "image": "",
+    "name": "Товар 3",
+    "desc": "Краткое описание товара",
+    "price": 350,
+    "stock": 0
+  },
+  {
+    "id": "p4",
+    "emoji": "🛒",
+    "image": "",
+    "name": "Товар 4",
+    "desc": "Краткое описание товара",
+    "price": 1200,
+    "stock": 6
+  }
 ]
