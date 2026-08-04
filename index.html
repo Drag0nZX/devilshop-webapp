@@ -652,6 +652,21 @@
     sendToBot({ type: "admin_delete_product", id: editingId });
   }
 
+  function checkAdmin(){
+    let uid = null;
+    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user){
+      uid = tg.initDataUnsafe.user.id;
+    }
+    const q = new URLSearchParams(location.search);
+    const ids = CLIENT_ADMIN_IDS.map(Number);
+    IS_ADMIN = (uid != null && ids.includes(Number(uid))) || q.get("admin") === "1";
+
+    // временно для теста — убрать потом:
+    IS_ADMIN = true;
+
+    document.getElementById("admin-fab").classList.toggle("hidden", !IS_ADMIN);
+  }
+  
   checkAdmin();
   loadProducts();
 </script>
