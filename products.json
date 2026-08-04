@@ -2,6 +2,7 @@
   { "id": "p1", "emoji": "📦", "image": "images/xros5mini.jpg", "name": "Xros 5 mini", "desc": "розовый градиент", "price": 2150 },
   { "id": "p2", "emoji": "📦", "image": "images/xros6.jpg", "name": "Xros 6", "desc": "красно-серебрянный", "price": 2450 },
   { "id": "p3", "emoji": "📦", "image": "images/xros0.6.jpg", "name": "Картридж Xros 0.6", "desc": "2 мл", "price": 250 },
-  { "id": "p4", "emoji": "📦", "image": "images/xros0.8.jpg", "name": "Картридж Xros 0.8", "desc": "2 мл", "price": 250 }
+  { "id": "p4", "emoji": "📦", "image": "images/xros0.8.jpg", "name": "Картридж Xros 0.8", "desc": "2 мл", "price": 250 },
+  { "id": "p5", "emoji": "📦", "image": "images/xros0.8.jpg", "name": "холодный бустер", "desc": "2 мл", "price": 50 }
   
 ]
