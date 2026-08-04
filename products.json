@@ -1,7 +1,7 @@
 [
   { "id": "p1", "emoji": "📦", "image": "images/xros5mini.jpg", "name": "Xros 5 mini", "desc": "...", "price": 2150 },
-  { "id": "p1", "emoji": "📦", "image": "images/xros6.jpg", "name": "Xros 6", "desc": "...", "price": 2450 },
-  { "id": "p1", "emoji": "📦", "image": "images/xros0.6.jpg", "name": "Картридж Xros 0.6", "desc": "...", "price": 250 },
-  { "id": "p1", "emoji": "📦", "image": "images/xros0.8.jpg", "name": "Картридж Xros 0.6", "desc": "...", "price": 250 }
+  { "id": "p2", "emoji": "📦", "image": "images/xros6.jpg", "name": "Xros 6", "desc": "...", "price": 2450 },
+  { "id": "p3", "emoji": "📦", "image": "images/xros0.6.jpg", "name": "Картридж Xros 0.6", "desc": "...", "price": 250 },
+  { "id": "p4", "emoji": "📦", "image": "images/xros0.8.jpg", "name": "Картридж Xros 0.6", "desc": "...", "price": 250 }
   
 ]
