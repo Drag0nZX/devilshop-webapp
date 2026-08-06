@@ -35,7 +35,13 @@
     font-size:28px;background:radial-gradient(circle at 30% 30%,var(--card-hi),var(--card));
     border:1px solid var(--line);overflow:hidden;
   }
-  .product .thumb img,.cart-item .thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+  .product .thumb img,.cart-item .thumb img,.variant-row .thumb img,.admin-row .thumb img{
+    width:100%;height:100%;object-fit:cover;display:block;max-width:100%;max-height:100%;
+  }
+  .admin-row .thumb{
+    height:36px;width:36px;border-radius:9px;font-size:18px;display:flex;align-items:center;
+    justify-content:center;background:var(--card-hi);overflow:hidden;flex-shrink:0;
+  }
   .product .name{font-size:14px;font-weight:600;line-height:1.25;}
   .product .desc{font-size:12px;color:var(--muted);line-height:1.3;min-height:30px;}
   .product .row{display:flex;align-items:center;justify-content:space-between;margin-top:auto;gap:6px;}
@@ -137,6 +143,18 @@
   .chip{font-size:12px;padding:6px 10px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--text);cursor:pointer;}
   .stock-input{width:64px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 8px;color:var(--text);font-size:13px;text-align:center;}
   .hint{font-size:12px;color:var(--muted);margin:8px 0 0;line-height:1.4;}
+  .delivery-options{display:flex;gap:8px;margin-bottom:12px;}
+  .delivery-opt{
+    flex:1;display:flex;align-items:center;justify-content:center;gap:8px;
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:12px 10px;cursor:pointer;font-size:13px;font-weight:600;text-align:center;
+  }
+  .delivery-opt.selected{border-color:var(--accent);background:var(--card-hi);color:var(--accent);}
+  .delivery-note{
+    background:rgba(245,166,35,.12);border:1px solid rgba(245,166,35,.35);
+    border-radius:12px;padding:12px 14px;margin-bottom:12px;font-size:13px;
+    color:var(--text);line-height:1.4;
+  }
 </style>
 </head>
 <body>
@@ -169,6 +187,12 @@
   <div id="view-checkout" class="view hidden">
     <div class="backrow"><button onclick="showView('cart')">← Корзина</button></div>
     <header style="padding-left:4px;padding-right:4px;"><h1>Оформление</h1></header>
+    <div class="section-title">Тип доставки</div>
+    <div class="delivery-options" id="delivery-options">
+      <div class="delivery-opt selected" data-id="city" onclick="selectDelivery('city')">🚚 По городу</div>
+      <div class="delivery-opt" data-id="intercity" onclick="selectDelivery('intercity')">🚛 Межгород</div>
+    </div>
+    <div id="delivery-city-note" class="delivery-note">Наш менеджер скоро с вами свяжется для уточнения деталей</div>
     <div class="section-title">Доставка</div>
     <div class="field"><label>Адрес</label><input id="f-address" type="text" placeholder="Город, улица, дом, квартира"></div>
     <div class="field"><label>Телефон</label><input id="f-phone" type="tel" inputmode="numeric" value="+7" oninput="onPhoneInput(this)" onfocus="onPhoneFocus(this)"></div>
@@ -234,7 +258,7 @@
 
 <script>
   // === Должен совпадать с ADMIN_IDS в .env бота ===
-  const CLIENT_ADMIN_IDS = [5543009095, 1915618979, 6706339931];
+  const CLIENT_ADMIN_IDS = [5543009095];
 
   let PRODUCTS = [];
   let IS_ADMIN = false;
@@ -247,6 +271,8 @@
     { id: "online", label: "Онлайн-оплата" },
   ];
   let selectedPay = PAY_METHODS[0].id;
+  let selectedDelivery = "city";
+  const DELIVERY_LABELS = { city: "Доставка по городу", intercity: "Доставка межгород" };
 
   const tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
   if (tg) { tg.ready(); tg.expand(); }
@@ -313,8 +339,7 @@
       uid = tg.initDataUnsafe.user.id;
     }
     const q = new URLSearchParams(location.search);
-    const ids = CLIENT_ADMIN_IDS.map(Number);
-    IS_ADMIN = (uid != null && ids.includes(Number(uid))) || q.get("admin") === "1";
+    IS_ADMIN = (uid && CLIENT_ADMIN_IDS.includes(uid)) || q.get("admin") === "1";
     document.getElementById("admin-fab").classList.toggle("hidden", !IS_ADMIN);
   }
 
@@ -498,6 +523,11 @@
   }
 
   function renderCheckout(){
+    document.querySelectorAll(".delivery-opt").forEach(el=>{
+      el.classList.toggle("selected", el.dataset.id === selectedDelivery);
+    });
+    const cityNote = document.getElementById("delivery-city-note");
+    if (cityNote) cityNote.classList.toggle("hidden", selectedDelivery !== "city");
     document.getElementById("pay-options").innerHTML = PAY_METHODS.map(m=>`
       <div class="pay-opt ${m.id===selectedPay?'selected':''}" onclick="selectPay('${m.id}')">
         <div class="dot"></div><div>${m.label}</div></div>`).join("");
@@ -511,6 +541,7 @@
     document.getElementById("submit-total").textContent = fmt(cartTotal());
   }
   function selectPay(id){ selectedPay = id; renderCheckout(); }
+  function selectDelivery(id){ selectedDelivery = id; renderCheckout(); }
 
   function sendToBot(payload){
     if (!tg || typeof tg.sendData !== "function"){
@@ -555,6 +586,8 @@
       phone,
       comment: document.getElementById("f-comment").value.trim(),
       payment: PAY_METHODS.find(m=>m.id===selectedPay).label,
+      delivery: DELIVERY_LABELS[selectedDelivery] || selectedDelivery,
+      delivery_type: selectedDelivery,
     });
   }
 
@@ -568,7 +601,7 @@
         ? (p.variants||[]).map(v=>`${escapeHtml(v.name)}: ${v.stock}`).join(" · ")
         : `остаток ${stock}`;
       return `<div class="admin-row" onclick="openAdminEdit('${p.id}')">
-        <div class="thumb" style="width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:var(--card-hi);font-size:18px">${thumbHtml(p)}</div>
+        <div class="thumb">${thumbHtml(p)}</div>
         <div class="info"><div class="n">${escapeHtml(p.name)} · ${fmt(p.price)}</div><div class="p">${sub}</div></div>
         <span class="badge">изм.</span></div>`;
     }).join("");
@@ -652,24 +685,9 @@
     sendToBot({ type: "admin_delete_product", id: editingId });
   }
 
-  function checkAdmin(){
-    let uid = null;
-    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user){
-      uid = tg.initDataUnsafe.user.id;
-    }
-    const q = new URLSearchParams(location.search);
-    const ids = CLIENT_ADMIN_IDS.map(Number);
-    IS_ADMIN = (uid != null && ids.includes(Number(uid))) || q.get("admin") === "1";
-
-    // временно для теста — убрать потом:
-    IS_ADMIN = true;
-
-    document.getElementById("admin-fab").classList.toggle("hidden", !IS_ADMIN);
-  }
-  
   checkAdmin();
   loadProducts();
 </script>
-<div style="text-align:center;color:#4a5266;font-size:10px;padding:10px 0 4px;">build 13 · github push</div>
+<div style="text-align:center;color:#4a5266;font-size:10px;padding:10px 0 4px;">build 14 · delivery + admin thumbs</div>
 </body>
 </html>
