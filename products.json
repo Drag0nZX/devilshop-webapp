@@ -46,5 +46,22 @@
         "stock": 6
       }
     ]
+  },
+  {
+    "id": "123-23646",
+    "name": "123",
+    "emoji": "📦",
+    "image": "",
+    "desc": "",
+    "price": 0,
+    "has_variants": false,
+    "variants": [
+      {
+        "id": "123-23646",
+        "name": "123",
+        "stock": 0
+      }
+    ],
+    "stock": 0
   }
 ]
